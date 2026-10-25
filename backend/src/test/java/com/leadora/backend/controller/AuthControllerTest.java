@@ -34,12 +34,16 @@ class AuthControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private com.leadora.backend.security.TokenBlacklistService tokenBlacklistService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
+        tokenBlacklistService.clear();
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -58,7 +62,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void testSuccessfulLogin() throws Exception {
+    void testSuccessfulAdminLogin() throws Exception {
         String loginJson = """
             {
                 "email": "admin@leadora.com",
@@ -74,6 +78,63 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.data.token", notNullValue()))
                 .andExpect(jsonPath("$.data.user.email", is("admin@leadora.com")))
                 .andExpect(jsonPath("$.data.user.role", is("ADMIN")));
+    }
+
+    @Test
+    void testSuccessfulMarketingExecutiveLogin() throws Exception {
+        String loginJson = """
+            {
+                "email": "marketing@leadora.com",
+                "password": "Marketing@Leadora2026"
+            }
+            """;
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.token", notNullValue()))
+                .andExpect(jsonPath("$.data.user.email", is("marketing@leadora.com")))
+                .andExpect(jsonPath("$.data.user.role", is("DIGITAL_MARKETING_EXECUTIVE")));
+    }
+
+    @Test
+    void testSuccessfulSalesExecutiveLogin() throws Exception {
+        String loginJson = """
+            {
+                "email": "sales@leadora.com",
+                "password": "Sales@Leadora2026"
+            }
+            """;
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.token", notNullValue()))
+                .andExpect(jsonPath("$.data.user.email", is("sales@leadora.com")))
+                .andExpect(jsonPath("$.data.user.role", is("SALES_EXECUTIVE")));
+    }
+
+    @Test
+    void testSuccessfulLoginWithDuplicateApiPrefix() throws Exception {
+        // Ensures /api/api/v1/auth/login is forwarded or permitted without 401
+        String loginJson = """
+            {
+                "email": "admin@leadora.com",
+                "password": "Admin@Leadora2026"
+            }
+            """;
+
+        mockMvc.perform(post("/api/api/v1/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.token", notNullValue()))
+                .andExpect(jsonPath("$.data.user.email", is("admin@leadora.com")));
     }
 
     @Test

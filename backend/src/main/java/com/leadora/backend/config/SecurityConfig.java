@@ -60,11 +60,17 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/health", "/api/health/ready").permitAll()
+                .requestMatchers(
+                    "/api/health", "/api/health/ready",
+                    "/api/api/health", "/api/api/health/ready"
+                ).permitAll()
                 .requestMatchers(
                     "/api/v1/auth/login",
                     "/api/v1/auth/forgot-password",
-                    "/api/v1/auth/reset-password"
+                    "/api/v1/auth/reset-password",
+                    "/api/api/v1/auth/login",
+                    "/api/api/v1/auth/forgot-password",
+                    "/api/api/v1/auth/reset-password"
                 ).permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()

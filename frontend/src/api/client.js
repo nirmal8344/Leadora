@@ -3,7 +3,25 @@
  * Reads VITE_API_BASE_URL without hardcoded localhost defaults in production.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
+const RAW_API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").trim().replace(/\/+$/, "");
+
+/**
+ * Normalizes base URL and endpoint to prevent duplicate `/api` path segments.
+ * Example: base='https://leadora-ijdq.onrender.com/api' + endpoint='/api/v1/auth/login'
+ * -> 'https://leadora-ijdq.onrender.com/api/v1/auth/login'
+ */
+export function buildApiUrl(endpoint) {
+  if (!endpoint) return RAW_API_BASE_URL;
+  if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
+    return endpoint;
+  }
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
+  if (RAW_API_BASE_URL.endsWith("/api") && cleanEndpoint.startsWith("/api/")) {
+    return `${RAW_API_BASE_URL.slice(0, -4)}${cleanEndpoint}`;
+  }
+  return `${RAW_API_BASE_URL}${cleanEndpoint}`;
+}
 
 let memoryToken = null;
 
@@ -23,9 +41,7 @@ export const clearAuthToken = () => {
  * Universal request wrapper
  */
 async function request(endpoint, options = {}) {
-  const url = endpoint.startsWith("http")
-    ? endpoint
-    : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  const url = buildApiUrl(endpoint);
 
   const headers = {
     "Content-Type": "application/json",
@@ -98,7 +114,7 @@ export const apiClient = {
       ...options,
     }),
   delete: (endpoint, options) => request(endpoint, { method: "DELETE", ...options }),
-  getBaseUrl: () => API_BASE_URL,
+  getBaseUrl: () => RAW_API_BASE_URL,
 };
 
 export default apiClient;

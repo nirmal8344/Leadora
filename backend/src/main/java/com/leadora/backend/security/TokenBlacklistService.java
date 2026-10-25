@@ -39,10 +39,9 @@ public class TokenBlacklistService {
     }
 
     /**
-     * Periodic cleanup of expired tokens from blacklist
+     * Clear blacklist (for testing and maintenance)
      */
-    public void cleanup() {
-        Instant now = Instant.now();
-        blacklist.entrySet().removeIf(entry -> now.isAfter(entry.getValue()));
+    public void clear() {
+        blacklist.clear();
     }
 }
