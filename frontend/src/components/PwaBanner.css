@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Leadora PWA Component Styles
+   Follows Leadora Enterprise Design System (Warm Cream, Bronze, Charcoal)
+   ========================================================================== */
+
+/* Top Offline Notice Banner */
+.ld-pwa-offline-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: #FEF3C7;
+  color: #92400E;
+  border-bottom: 1px solid #FCD34D;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  animation: ldSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ld-pwa-offline-icon {
+  flex-shrink: 0;
+}
+
+/* Floating Notification Container */
+.ld-pwa-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: calc(100% - 48px);
+  pointer-events: none;
+}
+
+/* PWA Card */
+.ld-pwa-card {
+  pointer-events: auto;
+  background: #FFFFFF;
+  border: 1px solid #E5D3C1;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: ldSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ld-pwa-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ld-pwa-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #FAF3ED;
+  color: #AF703B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-pwa-card-content {
+  flex: 1;
+}
+
+.ld-pwa-card-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #11141A;
+  line-height: 1.3;
+}
+
+.ld-pwa-card-desc {
+  margin: 4px 0 0 0;
+  font-size: 12.5px;
+  color: #7A756F;
+  line-height: 1.4;
+}
+
+.ld-pwa-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ld-pwa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.ld-pwa-btn-primary {
+  background: #AF703B;
+  color: #FFFFFF;
+}
+
+.ld-pwa-btn-primary:hover {
+  background: #8B5226;
+  box-shadow: 0 2px 6px rgba(175, 112, 59, 0.3);
+}
+
+.ld-pwa-btn-secondary {
+  background: #F4ECE4;
+  color: #4A453E;
+}
+
+.ld-pwa-btn-secondary:hover {
+  background: #E5D3C1;
+}
+
+.ld-pwa-btn-dismiss {
+  background: transparent;
+  border: none;
+  color: #A09A92;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ld-pwa-btn-dismiss:hover {
+  color: #11141A;
+  background: #F6F1EB;
+}
+
+/* Sidebar Install Button */
+.ld-nav-item.ld-install-btn {
+  color: #AF703B;
+  background: #FAF3ED;
+  border: 1px dashed #D4C8BA;
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.ld-nav-item.ld-install-btn:hover {
+  background: #F4ECE4;
+  border-color: #AF703B;
+  color: #8B5226;
+}
+
+@keyframes ldSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ldSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .ld-pwa-toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    max-width: none;
+  }
+}

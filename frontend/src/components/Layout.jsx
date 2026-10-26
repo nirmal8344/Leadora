@@ -24,10 +24,13 @@ import {
   CheckCircle2,
   AlertTriangle,
   Info,
+  Download,
 } from "lucide-react";
+import { usePwa } from "../context/PwaContext";
 
 export default function Layout({ children, pageTitle, pageSubtitle, headerAction }) {
   const { user, logout } = useAuth();
+  const { canInstall, isInstalled, installApp } = usePwa();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -245,6 +248,16 @@ export default function Layout({ children, pageTitle, pageSubtitle, headerAction
               <span className="ld-user-role">{roleLabel}</span>
             </div>
           </div>
+          {canInstall && !isInstalled && (
+            <button
+              onClick={installApp}
+              className="ld-nav-item ld-install-btn"
+              title="Install Leadora App"
+            >
+              <Download size={18} />
+              <span>Install App</span>
+            </button>
+          )}
           <button onClick={handleLogout} className="ld-nav-item ld-logout-btn">
             <LogOut size={18} />
             <span>Logout</span>

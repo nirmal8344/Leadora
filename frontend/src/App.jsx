@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { PwaProvider } from "./context/PwaContext";
+import PwaBanner from "./components/PwaBanner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -70,9 +72,11 @@ function PublicLoginRoute() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+    <PwaProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <PwaBanner />
+          <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<PublicLoginRoute />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -242,5 +246,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+  </PwaProvider>
   );
 }
